@@ -297,7 +297,7 @@ public class OrquestaClient {
 		buildRequest.setEntity(new StringEntity(jsonObject.toString()));
 		CloseableHttpClient createDefault = HttpClients.createDefault();
 		ResponseHandler responseHandler = new ResponseHandler();
-		LOG.info("------Calling Web services START----");
+		LOG.debug("------Calling Web services START----");
 		return createDefault.execute(buildRequest, responseHandler);
 	}
 
