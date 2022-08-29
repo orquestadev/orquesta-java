@@ -155,7 +155,7 @@ public class OrquestaClient {
 	}
 
 	/**
-	 * This method is for calling query List<String> API's
+	 * This method is for calling query List API's
 	 * 
 	 * @param ruleKey
 	 * @param defaultValue
@@ -231,12 +231,14 @@ public class OrquestaClient {
 	 * This method is for calling query domain API's
 	 * 
 	 * @param domain
-	 * @param defaultValue
 	 * @param context
 	 * @param cache
 	 * @return
 	 */
-	public JSONObject queryDomain(String domain, JSONObject defaultValue, JSONObject context, Boolean cache) {
+	public JSONObject queryDomain(String domain, JSONObject context, Boolean cache) {
+
+		JSONObject fallbackValue = new JSONObject();
+
 
 		Object cacheValue = checkCache(domain, context, cache);
 		if (cacheValue != null) {
@@ -245,7 +247,7 @@ public class OrquestaClient {
 			try {
 				JSONObject response = queryRequest("domain", domain, context);
 				if (response == null) {
-					return defaultValue;
+					return fallbackValue;
 				} else {
 					if (cache) {
 						cacheItem.put(domain, new OrquestaCacheItem(context, response, System.currentTimeMillis()));
@@ -254,7 +256,7 @@ public class OrquestaClient {
 				}
 			} catch (Exception e) {
 				LOG.error("Error while quering domain value {}", e.getMessage());
-				return defaultValue;
+				return fallbackValue;
 			}
 
 		}
